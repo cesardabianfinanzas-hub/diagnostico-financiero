@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tu Diagnóstico Financiero Real</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #fff;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+        
+        header {
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 32px;
+            color: #e3ff00;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 1rem;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #333;
+            border-radius: 2px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #e3ff00;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .question-container {
+            margin-bottom: 2.5rem;
+            padding: 1.5rem;
+            background: #252525;
+            border-radius: 8px;
+            border: 1px solid #404040;
+        }
+        
+        .question-number {
+            font-size: 12px;
+            color: #e3ff00;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        
+        .question-text {
+            font-size: 16px;
+            color: #e3ff00;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .option-label {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            cursor: pointer;
+            padding: 12px;
+            background: #1a1a1a;
+            border-radius: 6px;
+            border: 1px solid #404040;
+            transition: all 0.2s ease;
+        }
+        
+        .option-label:hover {
+            background: #2a2a2a;
+            border-color: #e3ff00;
+        }
+        
+        .option-label input[type="checkbox"] {
+            margin-top: 3px;
+            cursor: pointer;
+            accent-color: #e3ff00;
+        }
+        
+        .option-text {
+            font-size: 14px;
+            color: #ddd;
+            line-height: 1.5;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 2rem;
+        }
+        
+        button {
+            flex: 1;
+            padding: 14px 32px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        #calculateBtn {
+            background: #e3ff00;
+            color: #000;
+        }
+        
+        #calculateBtn:hover {
+            background: #ffff33;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(227, 255, 0, 0.3);
+        }
+        
+        #calculateBtn:active {
+            transform: translateY(0);
+        }
+        
+        #resetBtn {
+            background: #404040;
+            color: #e3ff00;
+            border: 1px solid #e3ff00;
+        }
+        
+        #resetBtn:hover {
+            background: #e3ff00;
+            color: #000;
+        }
+        
+        #testContainer.hidden {
+            display: none;
+        }
+        
+        #resultContainer {
+            display: none;
+            margin-top: 2rem;
+            padding: 2rem;
+            background: #2a2a2a;
+            border-radius: 12px;
+            border: 2px solid #e3ff00;
+        }
+        
+        #resultContainer.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .profile-name {
+            font-size: 28px;
+            color: #e3ff00;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+        
+        .profile-points {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 1.5rem;
+        }
+        
+        .profile-description {
+            font-size: 16px;
+            color: #ccc;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+        
+        .disclaimer {
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #404040;
+        }
+        
+        .hidden-group {
+            display: none;
+        }
+        
+        .hidden-group.show {
+            display: flex;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .question-container {
+                padding: 1rem;
+            }
+            
+            button {
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Tu Diagnóstico Financiero Real</h1>
+            <p class="subtitle">17-60 puntos | Descubre tu perfil</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </header>
+
+        <div id="testContainer"></div>
+
+        <div class="button-group">
+            <button id="calculateBtn" onclick="calculateResult()">Ver mi resultado</button>
+            <button id="resetBtn" onclick="location.reload()" style="display: none;">Reiniciar test</button>
+        </div>
+
+        <div id="resultContainer">
+            <div class="profile-name" id="profileName"></div>
+            <div class="profile-points" id="profilePoints"></div>
+            <div class="profile-description" id="profileDesc"></div>
+            <div class="button-group">
+                <button id="resetBtn2" onclick="location.reload()">Reiniciar test</button>
+            </div>
+        </div>
+
+        <div class="disclaimer">
+            Este diagnóstico es una herramienta de auto-evaluación. No constituye asesoramiento financiero profesional. Los resultados reflejan tu situación actual según tus respuestas. Consulta con un profesional si tu situación incluye deuda de alto riesgo o asuntos legales.
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            { 
+                q: "¿Cuál es tu situación actual con la deuda?", 
+                options: [
+                    { text: "No tengo deuda o es mínima (menos del 10% de mis ingresos anuales)", points: 4 },
+                    { text: "Tengo deuda manejable (entre el 10% y 50% de mis ingresos anuales)", points: 3 },
+                    { text: "Tengo deuda significativa (entre el 50% y 150% de mis ingresos anuales)", points: 2 },
+                    { text: "La deuda me abruma (más del 150% de mis ingresos anuales)", points: 1 }
+                ]
+            },
+            { 
+                q: "¿Cuánto ahorras actualmente de tus ingresos mensuales?", 
+                options: [
+                    { text: "No ahorro nada o casi nada (0-5%)", points: 1 },
+                    { text: "Ahorro poco (5-15%)", points: 2 },
+                    { text: "Ahorro moderado (15-30%)", points: 3 },
+                    { text: "Ahorro significativo (30% o más)", points: 4 }
+                ]
+            },
+            { 
+                q: "¿Tienes un fondo de emergencia o colchón de seguridad?", 
+                options: [
+                    { text: "No tengo fondo de emergencia", points: 1 },
+                    { text: "Tengo ahorrado para 1-3 meses de gastos", points: 2 },
+                    { text: "Tengo ahorrado para 3-6 meses de gastos", points: 3 },
+                    { text: "Tengo ahorrado para 6 meses o más de gastos", points: 4 }
+                ]
+            },
+            { 
+                q: "¿Cuál es tu fuente principal de ingresos?", 
+                options: [
+                    { text: "Empleado/a con sueldo fijo", points: 2 },
+                    { text: "Freelancer o trabajo independiente", points: 2 },
+                    { text: "Negocio o emprendimiento propio", points: 3 },
+                    { text: "Múltiples fuentes de ingreso", points: 3 },
+                    { text: "Ingresos pasivos o inversiones", points: 4 }
+                ]
+            },
+            { 
+                q: "¿Inviertes actualmente? Si sí, ¿en qué?", 
+                options: [
+                    { text: "No invierto, solo ahorro en cuenta bancaria", points: 1 },
+                    { text: "Invierto en fondos mutuos o ETFs", points: 2 },
+                    { text: "Invierto en acciones individuales", points: 3 },
+                    { text: "Invierto en bienes raíces o propiedades", points: 3 },
+                    { text: "Tengo múltiples tipos de inversión", points: 4 },
+                    { text: "No sé si lo que hago cuenta como inversión", points: 1 }
+                ]
+            },
+            { 
+                q: "¿Qué significa 'dinero' para ti?", 
+                options: [
+                    { text: "Seguridad y estabilidad", points: 2 },
+                    { text: "Libertad y autonomía", points: 3 },
+                    { text: "Poder y estatus", points: 2 },
+                    { text: "Una herramienta para lograr objetivos", points: 2 },
+                    { text: "Algo que genera ansiedad o rechazo", points: 1 },
+                    { text: "Energía que fluye según mis decisiones", points: 4 }
+                ]
+            },
+            { 
+                q: "¿Cómo aprendiste a relacionarte con el dinero?", 
+                options: [
+                    { text: "De mis padres, quienes eran conservadores con el dinero", points: 2 },
+                    { text: "De mis padres, quienes gastaban sin restricción", points: 1 },
+                    { text: "Aprendí viendo a mi familia luchar financieramente", points: 2 },
+                    { text: "No tuve educación financiera formal en casa", points: 1 },
+                    { text: "Aprendí por mis propios errores y experiencias", points: 3 },
+                    { text: "He estudiado conscientemente finanzas y psicología del dinero", points: 4 }
+                ]
+            },
+            { 
+                q: "¿Qué emoción predomina cuando piensas en tu situación financiera?", 
+                options: [
+                    { text: "Miedo o ansiedad", points: 1 },
+                    { text: "Frustración o impotencia", points: 2 },
+                    { text: "Apatía o indiferencia", points: 1 },
+                    { text: "Esperanza y confianza", points: 3 },
+                    { text: "Vergüenza o culpa", points: 1 },
+                    { text: "Motivación y determinación", points: 4 }
+                ]
+            },
+            { 
+                q: "¿Cuál es tu principal preocupación financiera ahora mismo?", 
+                options: [
+                    { text: "No poder pagar mis deudas", points: 1 },
+                    { text: "No tener suficiente para emergencias", points: 1 },
+                    { text: "No estar ahorrando lo que debería", points: 2 },
+                    { text: "No saber cómo invertir correctamente", points: 2 },
+                    { text: "No generar ingresos suficientes", points: 1 },
+                    { text: "No sé por dónde empezar a mejorar mi situación", points: 1 }
+                ]
+            },
+            { 
+                q: "¿Buscas gastar menos o ganar más?", 
+                options: [
+                    { text: "Necesito gastar menos urgentemente", points: 1 },
+                    { text: "Necesito ganar más urgentemente", points: 1 },
+                    { text: "Ambos: reducir gastos y aumentar ingresos", points: 2 },
+                    { text: "Mi enfoque es optimizar, no reducir drásticamente", points: 3 },
+                    { text: "Aún no tengo claro qué es la prioridad", points: 1 },
+                    { text: "Mi situación es estable, busco potencializar", points: 4 }
+                ]
+            },
+            { 
+                q: "¿Qué tan cómodo estás tomando riesgos financieros calculados?", 
+                options: [
+                    { text: "Prefiero seguridad total, sin riesgos", points: 1 },
+                    { text: "Estoy dispuesto a riesgos muy bajos", points: 2 },
+                    { text: "Puedo tolerar riesgos moderados", points: 4 },
+                    { text: "Soy cómodo con riesgos significativos", points: 2 },
+                    { text: "Busco riesgos altos por retornos potenciales", points: 1 },
+                    { text: "No sé evaluar mi tolerancia al riesgo", points: 1 }
+                ]
+            },
+            { 
+                q: "¿Confías en tu capacidad de generar ingresos?", 
+                options: [
+                    { text: "No confío, siento que dependo de otros", points: 1 },
+                    { text: "Confío poco, me preocupa perder ingresos", points: 2 },
+                    { text: "Confío moderadamente en mis habilidades", points: 2 },
+                    { text: "Confío bastante en mi capacidad de ganar", points: 3 },
+                    { text: "Confío totalmente, tengo múltiples formas de generar ingresos", points: 4 },
+                    { text: "He probado que puedo adaptarme y generar en cualquier situación", points: 4 }
+                ]
+            },
+            { 
+                q: "¿Qué significa libertad financiera para ti?", 
+                options: [
+                    { text: "No tener que trabajar si no quiero", points: 1 },
+                    { text: "Tener ingresos pasivos que cubran mis gastos", points: 3 },
+                    { text: "Poder vivir sin estrés financiero", points: 2 },
+                    { text: "Tener capacidad de elegir qué hacer con mi tiempo", points: 4 },
+                    { text: "Alcanzar un número específico de dinero ahorrado", points: 3 },
+                    { text: "Una combinación de no trabajar obligado y poder ayudar a otros", points: 4 }
+                ]
+            },
+            { 
+                q: "¿En cuánto tiempo crees que podrías lograr libertad financiera?", 
+                options: [
+                    { text: "No sé si sea posible para mí", points: 1 },
+                    { text: "Más de 10 años", points: 2 },
+                    { text: "Entre 5 y 10 años", points: 3 },
+                    { text: "Entre 3 y 5 años", points: 3 },
+                    { text: "Menos de 3 años", points: 4 },
+                    { text: "Ya la he alcanzado o estoy muy cerca", points: 4 }
+                ]
+            },
+            { 
+                q: "¿Cuál es tu principal obstáculo para avanzar financieramente?", 
+                options: [
+                    { text: "Falta de ingresos suficientes", points: 1 },
+                    { text: "Gastos incontrolables o lifestyle inflation", points: 1 },
+                    { text: "Falta de conocimiento sobre cómo invertir", points: 2 },
+                    { text: "Miedo o creencias limitantes sobre el dinero", points: 2 },
+                    { text: "Falta de disciplina para ejecutar el plan", points: 2 },
+                    { text: "No tengo un plan claro", points: 1 }
+                ]
+            },
+            { 
+                q: "¿Tienes ingresos pasivos o estás en proceso de crearlos?", 
+                options: [
+                    { text: "No tengo ingresos pasivos ni los persigo activamente", points: 1 },
+                    { text: "Tengo una idea de cómo crearlos pero aún no actúo", points: 1 },
+                    { text: "Estoy en proceso de construir ingresos pasivos", points: 3 },
+                    { text: "Tengo algunos ingresos pasivos que complementan mis ingresos", points: 3 },
+                    { text: "Tengo múltiples fuentes de ingresos pasivos consolidadas", points: 4 },
+                    { text: "Mis ingresos pasivos cubren parcial o totalmente mis gastos", points: 4 }
+                ]
+            }
+        ];
+
+        const profiles = [
+            { 
+                name: "EL ACUMULADOR EN CRISIS", 
+                range: "17-31 puntos", 
+                desc: "Estás en una situación de estrés financiero real. La deuda te abruma, no tienes colchón de seguridad. Pero esto NO es permanente. Tu consciencia de que algo debe cambiar es tu mayor fortaleza. Este programa te dará un mapa claro para estabilizarte." 
+            },
+            { 
+                name: "EL LUCHADOR DETERMINADO", 
+                range: "32-43 puntos", 
+                desc: "Ya saliste de la crisis aguda. Tienes ingresos y trabajas duro, pero sientes que no avanzan lo suficiente. Estás en transición. Tu empleo es tu trampolín. Lo que te falta es una estrategia clara para acelerar." 
+            },
+            { 
+                name: "EL CONSTRUCTOR CONSCIENTE", 
+                range: "44-52 puntos", 
+                desc: "Has salido del juego de supervivencia. Tu situación es estable y tienes respiradero. Comprendes el dinero y tomas decisiones conscientes. Tienes bases sólidas. Ahora es hora de potencializar y alcanzar verdadera libertad financiera." 
+            },
+            { 
+                name: "EL INVERSOR LIBERADO", 
+                range: "53-60 puntos", 
+                desc: "Has alcanzado lo que la mayoría sueña: libertad financiera real. No necesitas trabajar si no quieres. Tu dinero trabaja por ti. Ahora la pregunta no es cuánto tienes, sino para qué lo usas. Es hora de diseñar tu legado." 
+            }
+        ];
+
+        function renderTest() {
+            const container = document.getElementById('testContainer');
+            questions.forEach((q, idx) => {
+                const html = `
+                    <div class="question-container">
+                        <div class="question-number">Pregunta ${idx + 1} de ${questions.length}</div>
+                        <div class="question-text">${q.q}</div>
+                        <div class="options">
+                            ${q.options.map((opt, optIdx) => `
+                                <label class="option-label">
+                                    <input type="checkbox" class="answer" data-q="${idx}" data-points="${opt.points}">
+                                    <span class="option-text">${opt.text}</span>
+                                </label>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += html;
+            });
+            
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const total = document.querySelectorAll('.answer').length;
+            const checked = document.querySelectorAll('.answer:checked').length;
+            const progress = (checked / total) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function calculateResult() {
+            const answers = document.querySelectorAll('.answer:checked');
+            if (answers.length === 0) {
+                alert('Por favor responde al menos una pregunta');
+                return;
+            }
+            
+            let total = 0;
+            answers.forEach(ans => {
+                total += parseInt(ans.dataset.points);
+            });
+
+            let profileIdx = 0;
+            if (total >= 32) profileIdx = total >= 44 ? (total >= 53 ? 3 : 2) : 1;
+
+            const profile = profiles[profileIdx];
+            document.getElementById('profileName').textContent = profile.name;
+            document.getElementById('profilePoints').textContent = `${total} puntos • ${profile.range}`;
+            document.getElementById('profileDesc').textContent = profile.desc;
+            
+            document.getElementById('testContainer').classList.add('hidden');
+            document.getElementById('calculateBtn').style.display = 'none';
+            document.getElementById('resultContainer').classList.add('show');
+        }
+
+        document.addEventListener('change', updateProgress);
+        renderTest();
+    </script>
+</body>
+</html>
