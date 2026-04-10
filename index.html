@@ -271,7 +271,15 @@
             <div class="profile-name" id="profileName"></div>
             <div class="profile-points" id="profilePoints"></div>
             <div class="profile-description" id="profileDesc"></div>
-            <div class="button-group">
+            
+            <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #404040;">
+                <p style="font-size: 14px; color: #999; margin-bottom: 1rem;">Descarga tu diagnóstico completo:</p>
+                <a href="https://github.com/cesardabianfinanzas-hub/diagnostico-financiero/raw/main/Test_de_Situacion_Financiera.pdf" download style="display: inline-block; background: #e3ff00; color: #000; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s ease;">
+                    📥 Descargar PDF
+                </a>
+            </div>
+            
+            <div class="button-group" style="margin-top: 2rem;">
                 <button id="resetBtn2" onclick="location.reload()">Reiniciar test</button>
             </div>
         </div>
@@ -493,8 +501,7 @@
                             `).join('')}
                         </div>
                     </div>
-                `;
-                container.innerHTML += html;
+                `;\n                container.innerHTML += html;
             });
             
             updateProgress();
