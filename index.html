@@ -43,7 +43,7 @@
             <div class="profile-description" id="profileDesc"></div>
             <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #404040;">
                 <p style="font-size: 14px; color: #999; margin-bottom: 1rem;">Descarga tu diagnóstico completo:</p>
-                <a href="https://github.com/cesardabianfinanzas-hub/diagnostico-financiero/raw/main/Test_de_Situacion_Financiera.pdf" class="download-link">📥 Descargar PDF</a>
+                <a href="https://github.com/cesardabianfinanzas-hub/diagnostico-financiero/raw/main/Test%20de%20Situaci%C3%B3n%20Financiera%20%281%29.pdf" class="download-link">📥 Descargar PDF</a>
             </div>
             <button onclick="location.reload()" style="background: #404040; color: #e3ff00; border: 1px solid #e3ff00;">Reiniciar test</button>
         </div>
@@ -184,7 +184,7 @@
             const container = document.getElementById('testContainer');
             questions.forEach((q, idx) => {
                 let html = `<div class="question-container"><div class="question-number">Pregunta ${idx + 1} de ${questions.length}</div><div class="question-text">${q.q}</div><div class="options">`;
-                q.options.forEach((opt, optIdx) => {
+                q.options.forEach((opt) => {
                     html += `<label class="option-label"><input type="radio" name="q${idx}" class="answer" data-q="${idx}" data-points="${opt.points}"><span class="option-text">${opt.text}</span></label>`;
                 });
                 html += `</div></div>`;
@@ -193,7 +193,7 @@
         }
         function calculateResult() {
             const answers = document.querySelectorAll('.answer:checked');
-            if (answers.length < 16) { alert('Por favor responde todas las preguntas'); return; }
+            if (answers.length < 16) { alert('Por favor responde todas las 16 preguntas'); return; }
             let total = 0;
             answers.forEach(ans => { total += parseInt(ans.dataset.points); });
             let profileIdx = 0;
